@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import pe.edu.cibertec.backoffice_mvc_s.dto.FilmDetailDto;
 import pe.edu.cibertec.backoffice_mvc_s.dto.FilmDto;
 import pe.edu.cibertec.backoffice_mvc_s.dto.FilmEditDto;
+import pe.edu.cibertec.backoffice_mvc_s.entity.Language;
 import pe.edu.cibertec.backoffice_mvc_s.service.MaintenanceService;
 
 import java.util.List;
@@ -40,7 +41,10 @@ public class MaintenanceController {
     @GetMapping("/edit/{id}")
     public String editFilmForm(@PathVariable Integer id, Model model) {
         FilmEditDto filmEditDto = maintenanceService.getFilmForEditById(id);
+        List<Language> languages = maintenanceService.getAllLanguages();
+
         model.addAttribute("filmEditDto", filmEditDto);
+        model.addAttribute("languages", languages);
 
         return "maintenence-edit";
     }

@@ -21,6 +21,12 @@
             <label for="description" class="form-label">Descripción</label>
             <textarea class="form-control" id="description" th:field="*{description}"></textarea>
         </div>
+        <div class="mb-3">
+            <label for="language" class="form-label">Lenguaje</label>
+            <select class="form-select" id="language" th:field="*{languageId}">
+                <option th:each="lang : ${languages}" th:value="${lang.languageId}" th:text="${lang.name}"></option>
+            </select>
+        </div>
         <button type="submit" class="btn btn-primary">Guardar Cambios</button>
     </form>
 </div>

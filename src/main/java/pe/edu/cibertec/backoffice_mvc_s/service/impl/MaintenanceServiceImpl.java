@@ -6,7 +6,9 @@ import pe.edu.cibertec.backoffice_mvc_s.dto.FilmDetailDto;
 import pe.edu.cibertec.backoffice_mvc_s.dto.FilmDto;
 import pe.edu.cibertec.backoffice_mvc_s.dto.FilmEditDto;
 import pe.edu.cibertec.backoffice_mvc_s.entity.Film;
+import pe.edu.cibertec.backoffice_mvc_s.entity.Language;
 import pe.edu.cibertec.backoffice_mvc_s.repository.FilmRepository;
+import pe.edu.cibertec.backoffice_mvc_s.repository.LanguageRepository;
 import pe.edu.cibertec.backoffice_mvc_s.service.MaintenanceService;
 
 import java.util.ArrayList;
@@ -18,6 +20,9 @@ public class MaintenanceServiceImpl implements MaintenanceService {
 
     @Autowired
     FilmRepository filmRepository;
+
+    @Autowired
+    LanguageRepository languageRepository;
 
 
     @Override
@@ -63,7 +68,8 @@ public class MaintenanceServiceImpl implements MaintenanceService {
         return optional.map(film -> new FilmEditDto(
                 film.getFilmId(),
                 film.getTitle(),
-                film.getDescription()
+                film.getDescription(),
+                film.getLanguage().getLanguageId()
 
         )).orElse(null);
     }
@@ -73,9 +79,19 @@ public class MaintenanceServiceImpl implements MaintenanceService {
         Film film = filmRepository.findById(filmEditDto.filmId())
                 .orElseThrow(() -> new RuntimeException("Film not found"));
 
+        Language language = languageRepository.findById(filmEditDto.languageId())
+                .orElseThrow(() -> new RuntimeException("Language not found"));
+
         film.setTitle(filmEditDto.title());
         film.setDescription(filmEditDto.description());
+        film.setLanguage(language);
+
         filmRepository.save(film);
+    }
+
+    @Override
+    public List<Language> getAllLanguages() {
+        return languageRepository.findAll();
     }
 
 }
