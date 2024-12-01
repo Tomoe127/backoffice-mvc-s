@@ -12,6 +12,7 @@ import pe.edu.cibertec.backoffice_mvc_s.repository.LanguageRepository;
 import pe.edu.cibertec.backoffice_mvc_s.service.MaintenanceService;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -69,7 +70,16 @@ public class MaintenanceServiceImpl implements MaintenanceService {
                 film.getFilmId(),
                 film.getTitle(),
                 film.getDescription(),
-                film.getLanguage().getLanguageId()
+                film.getReleaseYear(),
+                film.getLanguage().getLanguageId(),
+                film.getLanguage().getName(),
+                film.getRentalDuration(),
+                film.getRentalRate(),
+                film.getLength(),
+                film.getReplacementCost(),
+                film.getRating(),
+                film.getSpecialFeatures(),
+                film.getLastUpdate()
 
         )).orElse(null);
     }
@@ -84,7 +94,15 @@ public class MaintenanceServiceImpl implements MaintenanceService {
 
         film.setTitle(filmEditDto.title());
         film.setDescription(filmEditDto.description());
+        film.setReleaseYear(filmEditDto.releaseYear());
         film.setLanguage(language);
+        film.setRentalDuration(filmEditDto.rentalDuration());
+        film.setRentalRate(filmEditDto.rentalRate());
+        film.setLength(filmEditDto.length());
+        film.setReplacementCost(filmEditDto.replacementCost());
+        film.setRating(filmEditDto.rating());
+        film.setSpecialFeatures(filmEditDto.specialFeatures());
+        film.setLastUpdate(new Date());
 
         filmRepository.save(film);
     }
