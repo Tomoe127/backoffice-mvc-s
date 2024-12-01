@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pe.edu.cibertec.backoffice_mvc_s.dto.FilmDetailDto;
 import pe.edu.cibertec.backoffice_mvc_s.dto.FilmDto;
+import pe.edu.cibertec.backoffice_mvc_s.dto.FilmEditDto;
 import pe.edu.cibertec.backoffice_mvc_s.entity.Film;
 import pe.edu.cibertec.backoffice_mvc_s.repository.FilmRepository;
 import pe.edu.cibertec.backoffice_mvc_s.service.MaintenanceService;
@@ -25,7 +26,7 @@ public class MaintenanceServiceImpl implements MaintenanceService {
         List<FilmDto> films = new ArrayList<FilmDto>();
         Iterable<Film> iterable = filmRepository.findAll();
         iterable.forEach(film -> {
-            FilmDto filmDto = new FilmDto(film.getFilmId(), film.getTitle(), film.getLanguage().getName(), film.getRentalRate());
+            FilmDto filmDto = new FilmDto(film.getFilmId(), film.getTitle(), film.getDescription(), film.getLanguage().getName(), film.getRentalRate());
             films.add(filmDto);
         });
 
@@ -53,4 +54,28 @@ public class MaintenanceServiceImpl implements MaintenanceService {
                         film.getLastUpdate())
         ).orElse(null);
     }
+
+    @Override
+    public FilmEditDto getFilmForEditById(int id) {
+
+        Optional<Film> optional = filmRepository.findById(id);
+
+        return optional.map(film -> new FilmEditDto(
+                film.getFilmId(),
+                film.getTitle(),
+                film.getDescription()
+
+        )).orElse(null);
+    }
+
+    @Override
+    public void updateFilm(FilmEditDto filmEditDto) {
+        Film film = filmRepository.findById(filmEditDto.filmId())
+                .orElseThrow(() -> new RuntimeException("Film not found"));
+
+        film.setTitle(filmEditDto.title());
+        film.setDescription(filmEditDto.description());
+        filmRepository.save(film);
+    }
+
 }

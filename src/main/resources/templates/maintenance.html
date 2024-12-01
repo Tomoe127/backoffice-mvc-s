@@ -17,6 +17,7 @@
         <tr>
             <th>Codigo</th>
             <th>Titulo</th>
+            <th>Descripcion</th>
             <th>Lenguaje</th>
             <th>Precio de alquiler (USD)</th>
         </tr>
@@ -27,8 +28,12 @@
                 </a>
             </td>
             <td th:text="${film.title()}"></td>
+            <td th:text="${film.description()}"></td>
             <td th:text="${film.language()}"></td>
             <td th:text="${film.rentalRate()}"></td>
+            <td>
+                <a class="btn btn-primary btn-sm" th:href="@{/maintenance/edit/{id}(id=${film.filmId()})}">Editar</a>
+            </td>
         </tr>
     </table>
 </div>
